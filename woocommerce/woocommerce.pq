@@ -5,8 +5,10 @@ section woocommerce;
 [DataSource.Kind="woocommerce", Publish="woocommerce.Publish"]
 
 
-shared woocommerce.WooTables = (query as text, user as text, password as text) =>
+shared woocommerce.WooTables = (query as text) =>
     let
+        user = Record.Field(Extension.CurrentCredential(), "Username"),
+        password = Record.Field(Extension.CurrentCredential(), "Password"),
         objects = #table(
             {"Name",       "Key",         "Data",                 "ItemKind", "ItemName", "IsLeaf"},{
             {"Categories", "Categories",   WooCatAPIImpl(query, user, password), "Table",    "Table",    true},
@@ -171,7 +173,7 @@ Table.ToNavigationTable = (
 woocommerce = [
     Authentication = [
         // Key = [],
-        //UsernamePassword = [],
+        UsernamePassword = [],
         // Windows = [],
         Anonymous = []
     ]
